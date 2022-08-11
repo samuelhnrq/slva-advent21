@@ -5,15 +5,19 @@
 (defn- sum [coll]
   (reduce + coll))
 
+(defn- cut-window [size]
+  (fn [nth coll]
+    (let [len (count coll)]
+      (subvec coll (min nth len) (min (+ nth size) len)))))
+
 (defn- build-heads [coll nth]
-  (->> (repeat nth coll)
-       (map-indexed drop)
-       (mapcat #(partition nth %))
-       (map sum)))
+  (->> (repeat (- (count coll) (dec nth)) coll)
+       (map-indexed (cut-window nth))))
 
 (defn calculate
   [input]
-  (->> (build-heads input 3)
+  (->> (build-heads (vec input) 3)
+       (map sum)
        (day1/calculate)))
 
 (def parse-input parse-number-lines)
