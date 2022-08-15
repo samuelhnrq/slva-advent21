@@ -1,8 +1,7 @@
 (ns slva.advent21.day2.part1-test
   (:require [clojure.test :refer :all]
             [slva.advent21.day2.parse :refer [->Action]]
-            [slva.advent21.day2.part1 :refer [calculate]]
-            ))
+            [slva.advent21.day2.part1 :refer [calculate]]))
 
 (deftest calculate-simple
   (testing "simple functionality"
