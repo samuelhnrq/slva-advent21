@@ -1,10 +1,8 @@
 (ns slva.advent21.day2.part1
-  (:require [clojure.core.match :refer [match]]
-            [slva.advent21.day2.parse :refer [->Action]]))
+  (:require [slva.advent21.day2.parse :refer [->Action]]))
 
 (defn- get-direction [action]
-  (match
-    (:direction action)
+  (case (:direction action)
     :down :vertical
     :up :vertical
     :forward :horizontal))
@@ -22,9 +20,9 @@
        (reduce +)))
 
 (defn- actions-to-coordinates [[kind actionList]]
-  (match kind
-         :vertical (calculate-verticals actionList)
-         :horizontal (calculate-horizontals actionList)))
+  (case kind
+    :vertical (calculate-verticals actionList)
+    :horizontal (calculate-horizontals actionList)))
 
 (def ^:private zero-values [(->Action :up 0)
                             (->Action :forward 0)])

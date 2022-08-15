@@ -1,12 +1,11 @@
 {:paths ["src" "resources"]
- :deps  {org.clojure/clojure    {:mvn/version "1.11.1"}
-         org.clojure/core.match {:mvn/version "1.0.0"}}
+ :deps  {org.clojure/clojure {:mvn/version "1.11.1"}}
  :aliases
  {:run-m {:main-opts ["-m" "slva.advent21.runner"]}
   :run-x {:ns-default slva.advent21.runner
           :exec-fn    -main}
   :build {:deps       {io.github.seancorfield/build-clj
-                       {:git/tag   "v0.8.2" :git/sha "0ffdb4c"
+                       {:git/tag   "v0.8.3" :git/sha "7ac1f8d"
                         ;; since we're building an app uberjar, we do not
                         ;; need deps-deploy for clojars.org deployment:
                         :deps/root "slim"}}

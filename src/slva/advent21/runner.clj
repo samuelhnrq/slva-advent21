@@ -1,7 +1,8 @@
 (ns slva.advent21.runner
   (:require [clojure.java.io :refer [resource]])
   (:import (clojure.lang ExceptionInfo)
-           (java.io FileNotFoundException)))
+           (java.io FileNotFoundException))
+  (:gen-class))
 
 ;; TODO: Dynamically source from advent of code
 (defn- read-input [day]
