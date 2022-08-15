@@ -14,5 +14,6 @@
   :test  {:extra-paths ["test"]
           :exec-fn     cognitect.test-runner.api/test
           :extra-deps  {org.clojure/test.check {:mvn/version "1.1.1"}
+                        cloverage/cloverage    {:mvn/version "1.2.4"}
                         io.github.cognitect-labs/test-runner
                         {:git/tag "v0.5.0" :git/sha "48c3c67"}}}}}
