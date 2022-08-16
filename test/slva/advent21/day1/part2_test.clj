@@ -14,4 +14,4 @@
   (testing "increasing"
     (is (= 1 (calculate [1 1 2 4]))))
   (testing "increasing and not"
-    (is (= 5 (calculate [1 1 2 2 2 66  50 30 55])))))
+    (is (= 5 (calculate [1 1 2 2 2 66 50 30 55])))))

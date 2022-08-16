@@ -6,32 +6,32 @@
 
 ;; TODO: Dynamically source from advent of code
 (defn- read-input [day]
-  (print "will read input for " day)
+  (println "Fetching input from classpath for day" day)
   (slurp (resource (str "inputs/day" day ".txt"))))
 
 (defn- calculate-require [day part]
   (->
-    (str "slva.advent21.day" day ".part" part)
-    (symbol "calculate")
-    requiring-resolve))
+   (str "slva.advent21.day" day ".part" part)
+   (symbol "calculate")
+   requiring-resolve))
 
 (defn- parse-require [day]
   (->
-    (str "slva.advent21.day" day ".parse")
-    (symbol "parse-input")
-    requiring-resolve))
+   (str "slva.advent21.day" day ".parse")
+   (symbol "parse-input")
+   requiring-resolve))
 
 (defn- wrap-func [name func]
   (fn [& args]
     (let [start (System/nanoTime)]
-      (println "Starting to " name)
+      (println "Starting to" name)
       (let [res (apply func args)]
-        (println "It took " (/ 1000000.0 (- (System/nanoTime) start)) "ms")
+        (printf "It took %.4f ms\n" (/ 1000000.0 (- (System/nanoTime) start)))
         res))))
 
 (defn- get-day-refs [day part]
   [(wrap-func "parse input" (parse-require day))
-   (wrap-func "calculating" (calculate-require day part))])
+   (wrap-func "calculate" (calculate-require day part))])
 
 (defn- run-day [{:keys [day part]}]
   (let [[parse calculate] (get-day-refs day part)
@@ -60,10 +60,10 @@
 (defn -main [& args]
   (try
     (->>
-      (run-day (parse-args args))
-      println)
+     (run-day (parse-args args))
+     println)
     (catch ExceptionInfo e
       (println (.getMessage e))
       (println "Usage: ./executable [day] [part]"))
     (catch FileNotFoundException _ex
-      (println (str "Did not found input for day")))))
+      (println (str "Did not found input for given day")))))
