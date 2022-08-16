@@ -3,36 +3,32 @@
 (def input-size 12)
 
 (defn- reduce-bit [state index next]
-  (let [elem (mod index input-size)
-        index (+ elem (if (= 0 next) 0 input-size))]
-    (update state index inc)))
+  (let [elem (mod index input-size)]
+    (if (= next 1)
+      (update state elem inc)
+      state)))
 
-;; (defn- inspect [msg val]
-;;   (println msg val)
-;;   val)
+(defn- inspect [msg val]
+  (println msg val)
+  val)
 
-(defn- bit-array [bits]
+(defn- bits-to-int [bits]
   (->>
    bits
-   (reverse)
+   reverse
    (map-indexed #(* %2 (Math/pow 2 %1)))
-   (reduce +)))
+   (reduce +)
+   int))
 
-(defn xfs-or [f fColl sColl]
-  (fn [i]
-    (let [one (nth fColl i)
-          two (nth sColl i)]
-      (if (f one two) 1 0))))
-
-(defn- masks-to-bits [[zeros ones]]
-  [(map (xfs-or > zeros ones) (range input-size))
-   (map (xfs-or > ones zeros) (range input-size))])
+(defn- masks-to-bits [ttl-inputs ones]
+  (let [half (Math/ceil (/ ttl-inputs 2.0))]
+    [(map #(if (> % half) 1 0) ones)
+     (map #(if (> % half) 0 1) ones)]))
 
 (defn calculate [input]
-  (->>
-   (reduce-kv reduce-bit (vec (repeat (* 2 input-size) 0)) input)
-   (partition input-size)
-   masks-to-bits
-   (map bit-array)
-   (reduce *)
-   int))
+  (let [ttl-inputs (/ (count input) input-size)]
+    (->>
+     (reduce-kv reduce-bit (vec (repeat input-size 0)) input)
+     (masks-to-bits ttl-inputs)
+     (map bits-to-int)
+     (reduce *))))
