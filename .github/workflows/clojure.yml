@@ -37,9 +37,7 @@ jobs:
       - name: Build Uber JAR
         run: clojure -T:build ci
 
-      - name: Publish the binaries
-        uses: skx/github-action-publish-binaries@release-2.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/upload-artifact@v3
         with:
-          args: 'target/advent21*.jar'
+          name: Built Uber JAR
+          path: target/advent21*.jar
