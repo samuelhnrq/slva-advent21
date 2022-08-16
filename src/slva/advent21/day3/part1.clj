@@ -8,10 +8,6 @@
       (update state elem inc)
       state)))
 
-(defn- inspect [msg val]
-  (println msg val)
-  val)
-
 (defn- bits-to-int [bits]
   (->>
    bits
@@ -21,7 +17,7 @@
    int))
 
 (defn- masks-to-bits [ttl-inputs ones]
-  (let [half (Math/ceil (/ ttl-inputs 2.0))]
+  (let [half (Math/floor (/ ttl-inputs 2.0))]
     [(map #(if (> % half) 1 0) ones)
      (map #(if (> % half) 0 1) ones)]))
 

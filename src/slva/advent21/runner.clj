@@ -33,7 +33,7 @@
   [(wrap-func "parse input" (parse-require day))
    (wrap-func "calculate" (calculate-require day part))])
 
-(defn- run-day [{:keys [day part]}]
+(defn run-day [{:keys [day part]}]
   (let [[parse calculate] (get-day-refs day part)
         input (read-input day)]
     (->> (parse input)

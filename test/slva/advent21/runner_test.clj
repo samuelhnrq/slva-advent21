@@ -26,3 +26,10 @@
   (testing "missing part"
     (is (thrown-with-msg? ExceptionInfo #"(?i)part"
                           (target/validate-args "1" nil)))))
+
+(deftest imports-correct-day
+  (testing "day dynamic require"
+    (is (with-redefs [requiring-resolve (constantly (constantly "day1"))
+                      printf (constantly nil)
+                      println (constantly nil)]
+          (= "day1" (target/run-day {:day 1 :part 1}))))))
