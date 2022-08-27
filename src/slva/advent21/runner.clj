@@ -6,8 +6,12 @@
 
 ;; TODO: Dynamically source from advent of code
 (defn- read-input [day]
-  (println "Fetching input from classpath for day" day)
-  (slurp (resource (str "inputs/day" day ".txt"))))
+  (println "Reading input for day" day "(from classpath)")
+  (let [input-file (resource (str "inputs/day" day ".txt"))]
+    (when (not input-file)
+      (println "Could not find input for day" day)
+      (throw (ex-info "This input file for given day is missing!" {})))
+    (slurp input-file)))
 
 (defn- calculate-require [day part]
   (->
@@ -21,21 +25,21 @@
    (symbol "parse-input")
    requiring-resolve))
 
-(defn- wrap-func [name func]
+(defn- instrument-func [msg func]
   (fn [& args]
     (let [start (System/nanoTime)]
-      (println "Starting to" name)
+      (println "Starting to" msg)
       (let [res (apply func args)]
-        (printf "It took %.4f ms\n" (/ 1000000.0 (- (System/nanoTime) start)))
+        (printf "It took %.2f ms\n" (/ 1000000.0 (- (System/nanoTime) start)))
         res))))
 
 (defn- get-day-refs [day part]
-  [(wrap-func "parse input" (parse-require day))
-   (wrap-func "calculate" (calculate-require day part))])
+  [(instrument-func "parse input" (parse-require day))
+   (instrument-func "calculate" (calculate-require day part))])
 
 (defn run-day [{:keys [day part]}]
-  (let [[parse calculate] (get-day-refs day part)
-        input (read-input day)]
+  (let [input (read-input day)
+        [parse calculate] (get-day-refs day part)]
     (->> (parse input)
          (calculate))))
 
@@ -61,7 +65,7 @@
   (try
     (->>
      (run-day (parse-args args))
-     println)
+     (println "Result is:\n -"))
     (catch ExceptionInfo e
       (println (.getMessage e))
       (println "Usage: ./executable [day] [part]"))
