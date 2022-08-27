@@ -19,6 +19,8 @@
                           (target/validate-args "-2" "1"))))
   (testing "invalid part"
     (is (thrown-with-msg? ExceptionInfo #"(?i)part"
+                          (target/validate-args "1" "42")))
+    (is (thrown-with-msg? ExceptionInfo #"(?i)part"
                           (target/validate-args "1" "-1"))))
   (testing "missing day"
     (is (thrown-with-msg? ExceptionInfo #"(?i)day"
